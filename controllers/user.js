@@ -38,6 +38,7 @@ const create = (db) => {
 
 const logout = (request, response) => {
   response.clearCookie('loggedIn');
+  response.clearCookie('username');
   response.redirect(301, '/');
 };
 
@@ -45,10 +46,24 @@ const loginForm = (request, response) => {
   response.render('user/login');
 };
 
-const login = (request, response) => {
+const login = (db) => {
   // TODO: Add logic here
   // Hint: All SQL queries should happen in the corresponding model file
   // ie. in models/user.js - which method should this controller call on the model?
+  return (request, response) => {
+
+    db.user.login(request.body, (error,queryResult) => {
+      if(queryResult == true){
+        response.cookie('loggedIn',true);
+        response.cookie('username',request.body.name);
+        response.redirect('/');
+      }
+      else{
+        response.send("no such user");
+      }
+    })
+
+  };
 };
 
 /**

@@ -12,6 +12,8 @@ module.exports = (dbPool) => {
       // run user input password through bcrypt to obtain hashed password
       bcrypt.hash(user.password, 1, (err, hashed) => {
         if (err) console.error('error!', err);
+        console.log("new pass: " + user.password);
+        console.log("new hash: " + hashed);
 
         // set up query
         const queryString = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)';
@@ -41,8 +43,18 @@ module.exports = (dbPool) => {
       });
     },
 
-    login: (user, callback) => {
+    login: (inputInfo, callback) => {
       // TODO: Add logic here
+      const queryString = "SELECT password from users WHERE name='" + inputInfo.name + "'";
+
+      dbPool.query(queryString,(error,queryResult) => {
+
+        let storePass = queryResult.rows[0].password;
+        // compare between plain text password and stored hashed password
+        bcrypt.compare(inputInfo.password,storePass,(error, response) => {
+            callback(error,response);
+        })
+      })
     }
-  };
+  }
 };

@@ -19,15 +19,30 @@ const get = (db) => {
   };
 };
 
+//for route get('/pokemons/:id/edit')
 const updateForm = (db) => {
   return (request, response) => {
     // TODO: Add logic here
+    db.pokemon.get(request.params.id, (error,queryResult) => {
+      if(error){
+        console.error("can't get form", error);
+      }
+      else{
+        response.render('pokemon/edit',{pokemon:queryResult.rows[0]});
+      }
+    })
   };
 };
 
+//for route put('/pokemons/:id/edit')
 const update = (db) => {
   return (request, response) => {
+    console.log(request.body);
+    console.log(request.params.id);
     // TODO: Add logic here
+    db.pokemon.update(request.body, (error,queryResult) => {
+      response.redirect('/pokemons/' + request.params.id);
+    })
   };
 };
 
