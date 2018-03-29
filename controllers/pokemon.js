@@ -37,8 +37,6 @@ const updateForm = (db) => {
 //for route put('/pokemons/:id/edit')
 const update = (db) => {
   return (request, response) => {
-    console.log(request.body);
-    console.log(request.params.id);
     // TODO: Add logic here
     db.pokemon.update(request.body, (error,queryResult) => {
       response.redirect('/pokemons/' + request.params.id);

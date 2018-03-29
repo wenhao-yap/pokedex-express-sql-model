@@ -34,7 +34,7 @@ module.exports = (dbPool) => {
     },
 
     update: (updatePoke, callback) =>{
-      const queryString = 'Update pokemons Set id=$1,num=$2,name=$3,img=$4,weight=$5,height=$6 WHERE id=$1';
+      const queryString = 'Update pokemons Set id=$1,name=$2,num=$3,img=$4,weight=$5,height=$6 WHERE (id=$1)';
       const values = [
         updatePoke.id,
         updatePoke.name,
