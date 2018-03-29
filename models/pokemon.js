@@ -9,19 +9,22 @@ module.exports = (dbPool) => {
     create: (pokemon, callback) => {
       // set up query
       const queryString = `INSERT INTO pokemons (name, num, img, weight, height)
-        VALUES ($1, $2, $3, $4, $5)`;
+        VALUES ($1, $2, $3, $4, $5) returning id`;
       const values = [
         pokemon.name,
         pokemon.num,
         pokemon.img,
         pokemon.weight,
-        pokemon.height
+        pokemon.height,
       ];
-
       // execute query
       dbPool.query(queryString, values, (err, queryResult) => {
         // invoke callback function with results after query has executed
-        callback(err, queryResult);
+        const secondQuery = 'INSERT INTO user_pokemons (pokemon_id,user_id) VALUES (' + queryResult.rows[0].id + ',' + pokemon.user_id + ')';
+        console.log(secondQuery);
+        dbPool.query(secondQuery, (err,queryOutput) => {
+          callback(err, queryResult);
+        });  
       });
     },
 

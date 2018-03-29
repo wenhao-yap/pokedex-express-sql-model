@@ -10,11 +10,15 @@
       id: {{user.id}}
     </li>
     <li class="user-attribute">
-      name: {{user.name}}
+      username: {{user.username}}
     </li>
     <li class="user-attribute">
       email: {{user.email}}
     </li>
+    <p> LISTS OF POKEMON</p>
+      {{#each pokemon}}
+    <li>{{this.name}}</li>
+      {{/each}}
   </ul>
 </body>
 </html>

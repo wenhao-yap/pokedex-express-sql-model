@@ -25,7 +25,7 @@ const create = (db) => {
 
         // drop cookies to indicate user's logged in status and username
         response.cookie('loggedIn', true);
-        response.cookie('username', request.body.name);
+        response.cookie('username', request.body.username);
       } else {
         console.log('User could not be created');
       }
@@ -55,7 +55,7 @@ const login = (db) => {
     db.user.login(request.body, (error,queryResult) => {
       if(queryResult == true){
         response.cookie('loggedIn',true);
-        response.cookie('username',request.body.name);
+        response.cookie('username',request.body.username);
         response.redirect('/');
       }
       else{
@@ -65,6 +65,19 @@ const login = (db) => {
 
   };
 };
+
+const listPoke = (db) => {
+  return (request, response) =>{
+    db.user.get(request.params.id, (error, queryResult) => {
+      let context = {
+        user: queryResult.rows[0],
+        pokemon: queryResult.rows
+      }
+      response.render('user/user', context);
+    });
+  };
+};
+
 
 /**
  * ===========================================
@@ -76,5 +89,6 @@ module.exports = {
   create,
   logout,
   loginForm,
-  login
+  login,
+  listPoke
 };

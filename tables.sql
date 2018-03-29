@@ -11,7 +11,13 @@ CREATE TABLE IF NOT EXISTS pokemons (
 -- create users table
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
-  name varchar(255),
+  username varchar(255),
   email varchar(255),
   password varchar(255)
+);
+
+CREATE TABLE IF NOT EXISTS user_pokemons (
+  id SERIAL PRIMARY KEY,
+  pokemon_id int REFERENCES pokemons(id),
+  user_id int REFERENCES users(id)
 );

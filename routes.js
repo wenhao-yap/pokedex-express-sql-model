@@ -15,6 +15,7 @@ module.exports = (app, db) => {
   app.post('/users/logout', users.logout);
   app.get('/users/login', users.loginForm);
   app.post('/users/login', users.login(db));
+  app.get('/users/:id', users.listPoke(db));
 
   /*
    *  =========================================
